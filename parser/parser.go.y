@@ -595,18 +595,6 @@ expr :
 		$$ = &ast.IncludeExpr{ItemExpr: $1, ListExpr: $3}
 		$$.SetPosition($1.Position())
 	}
-	| MAP '{' opt_newlines expr_map opt_comma_newlines '}'
-	{
-		$4.TypeData = &ast.TypeStruct{Kind: ast.TypeMap, Key: &ast.TypeStruct{Name: "interface"}, SubType: &ast.TypeStruct{Name: "interface"}}
-		$$ = $4
-		$$.SetPosition($1.Position())
-	}
-	| MAP '[' type_data ']' type_data '{' opt_newlines expr_map opt_comma_newlines '}'
-	{
-		$8.TypeData = &ast.TypeStruct{Kind: ast.TypeMap, Key: $3, SubType: $5}
-		$$ = $8
-		$$.SetPosition($1.Position())
-	}
 	| '{' opt_newlines expr_map opt_comma_newlines '}'
 	{
 		$$ = $3

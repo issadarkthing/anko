@@ -188,7 +188,7 @@ println(a) // [1 2 3]
 println(a[0]) // 1
 
 // map
-a = map[interface]interface{"x": 1}
+a = {"x": 1}
 println(a) // map[x:1]
 a.b = 2
 a["c"] = 3
