@@ -8,6 +8,10 @@ import (
 	"github.com/mattn/anko/vm"
 )
 
+func init() {
+	log.SetFlags(log.Lshortfile)
+}
+
 func Example_vmArrays() {
 	e := env.NewEnv()
 
@@ -96,7 +100,7 @@ func Example_vmMaps() {
 	}
 
 	script := `
-a = map[interface]interface{}
+a = {}
 println(a)
 
 a.b = 1

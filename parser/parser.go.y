@@ -81,7 +81,7 @@ import (
 	op_multiply            ast.Operator
 }
 
-%token<tok> IDENT NUMBER STRING ARRAY VARARG FUNC RETURN VAR THROW IF ELSE FOR IN EQEQ NEQ GE LE OROR ANDAND NEW TRUE FALSE NIL NILCOALESCE MODULE TRY CATCH FINALLY PLUSEQ MINUSEQ MULEQ DIVEQ ANDEQ OREQ BREAK CONTINUE PLUSPLUS MINUSMINUS SHIFTLEFT SHIFTRIGHT SWITCH CASE DEFAULT GO CHAN STRUCT MAKE OPCHAN EQOPCHAN TYPE LEN DELETE CLOSE MAP IMPORT
+%token<tok> IDENT NUMBER STRING ARRAY VARARG FUNC RETURN VAR THROW IF ELSE FOR IN EQEQ NEQ GE LE OROR ANDAND NEW TRUE FALSE NIL NILCOALESCE MODULE TRY CATCH FINALLY PLUSEQ MINUSEQ MULEQ DIVEQ ANDEQ OREQ BREAK CONTINUE PLUSPLUS MINUSMINUS SHIFTLEFT SHIFTRIGHT SWITCH CASE DEFAULT GO CHAN STRUCT MAKE OPCHAN EQOPCHAN TYPE LEN DELETE CLOSE IMPORT
 
 /* lowest precedence */
 %left ,
@@ -595,18 +595,6 @@ expr :
 		$$ = &ast.IncludeExpr{ItemExpr: $1, ListExpr: $3}
 		$$.SetPosition($1.Position())
 	}
-	| MAP '{' opt_newlines expr_map opt_comma_newlines '}'
-	{
-		$4.TypeData = &ast.TypeStruct{Kind: ast.TypeMap, Key: &ast.TypeStruct{Name: "interface"}, SubType: &ast.TypeStruct{Name: "interface"}}
-		$$ = $4
-		$$.SetPosition($1.Position())
-	}
-	| MAP '[' type_data ']' type_data '{' opt_newlines expr_map opt_comma_newlines '}'
-	{
-		$8.TypeData = &ast.TypeStruct{Kind: ast.TypeMap, Key: $3, SubType: $5}
-		$$ = $8
-		$$.SetPosition($1.Position())
-	}
 	| '{' opt_newlines expr_map opt_comma_newlines '}'
 	{
 		$$ = $3
@@ -674,10 +662,6 @@ type_data :
 		} else {
 			$$ = &ast.TypeStruct{Kind: ast.TypeSlice, SubType: $2, Dimensions: $1}
 		}
-	}
-	| MAP '[' type_data ']' type_data
-	{
-		$$ = &ast.TypeStruct{Kind: ast.TypeMap, Key: $3, SubType: $5}
 	}
 	| CHAN type_data
 	{
